@@ -32,6 +32,10 @@ class PostSerializer(serializers.ModelSerializer):
         fields = '__all__'
         model = Post
 
+    def create(self, validated_data):
+        validated_data['author'] = self.context['request'].user
+        return super().create(validated_data)
+
 
 class FollowSerializer(serializers.ModelSerializer):
     user = SlugRelatedField(
