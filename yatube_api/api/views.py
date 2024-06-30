@@ -41,8 +41,9 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
 
 
-class PostCreateListViewSet(mixins.CreateModelMixin, mixins.ListModelMixin,
-                     viewsets.GenericViewSet):
+class PostCreateListViewSet(
+    mixins.CreateModelMixin, mixins.ListModelMixin,viewsets.GenericViewSet
+    ):
 
     pass
 
