@@ -42,9 +42,10 @@ class PostViewSet(viewsets.ModelViewSet):
 
 
 class PostCreateListViewSet(
-    mixins.CreateModelMixin, mixins.ListModelMixin,viewsets.GenericViewSet
-    ):
-
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet
+):
     pass
 
 
