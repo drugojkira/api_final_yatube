@@ -30,8 +30,8 @@ class PostSerializer(serializers.ModelSerializer):
     author = SlugRelatedField(slug_field='username', read_only=True)
 
     class Meta:
-        fields = '__all__'
         model = Post
+        fields = '__all__'
 
 
 class FollowSerializer(serializers.ModelSerializer):
@@ -50,10 +50,11 @@ class FollowSerializer(serializers.ModelSerializer):
         model = Follow
         validators = [
             UniqueTogetherValidator(
-                queryset=Follow.objects.all(), fields=('following', 'user'))
+                queryset=Follow.objects.all(), fields=('following', 'user')
+            )
         ]
 
-    def validate_following(self, value):
-        if self.context['request'].user == value:
+    def validate_following(self, following):
+        if self.context['request'].user == following:
             raise serializers.ValidationError('Подписаться на себя нельзя.')
-        return value
+        return following
