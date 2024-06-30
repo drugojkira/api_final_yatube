@@ -38,6 +38,9 @@ class Comment(models.Model):
     created = models.DateTimeField(
         'Дата добавления', auto_now_add=True, db_index=True)
 
+    class Meta:
+        ordering = ['-created']
+
 
 class Follow(models.Model):
     following = models.ForeignKey(
@@ -50,3 +53,6 @@ class Follow(models.Model):
         on_delete=models.CASCADE,
         related_name='follower'
     )
+
+    class Meta:
+        ordering = ['-id']
