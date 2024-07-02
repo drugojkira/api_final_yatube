@@ -24,7 +24,9 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         if not self.request.user.is_authenticated:
-            raise NotAuthenticated('Authentication is required to create a comment.')
+            raise NotAuthenticated(
+                'Authentication is required to create a comment.'
+            )
         post = self.get_post()
         serializer.save(author=self.request.user, post=post)
 
@@ -39,8 +41,9 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = (
-        permissions.IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly,
-        )
+        permissions.IsAuthenticatedOrReadOnly,
+        IsAuthorOrReadOnly,
+    )
     pagination_class = LimitOffsetPagination
 
     def perform_create(self, serializer):
@@ -51,7 +54,7 @@ class PostCreateListViewSet(
     mixins.CreateModelMixin,
     mixins.ListModelMixin,
     viewsets.GenericViewSet
-): 
+):
     pass
 
 
@@ -59,7 +62,7 @@ class FollowViewSet(PostCreateListViewSet):
     queryset = Follow.objects.all()
     serializer_class = FollowSerializer
     permission_classes = [permissions.IsAuthenticated]
-    filter_backends = (filters.SearchFilter,) 
+    filter_backends = (filters.SearchFilter,)
     search_fields = ('following__username',)
 
     def get_queryset(self):

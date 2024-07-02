@@ -1,18 +1,18 @@
-from django.contrib.auth import get_user_model 
-from django.db import models 
- 
-User = get_user_model() 
- 
- 
-class Group(models.Model): 
-    title = models.CharField(max_length=200) 
-    slug = models.SlugField(unique=True) 
-    description = models.TextField() 
- 
-    def __str__(self): 
-        return self.title 
- 
- 
+from django.contrib.auth import get_user_model
+from django.db import models
+
+User = get_user_model()
+
+
+class Group(models.Model):
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.title
+
+
 class Post(models.Model):
     text = models.TextField()
     pub_date = models.DateTimeField(
@@ -37,32 +37,35 @@ class Post(models.Model):
             f'{self.text[:30]}... (author: {self.author.username}, '
             f'pub_date: {self.pub_date}, group: {self.group})'
         )
- 
- 
-class Comment(models.Model): 
-    author = models.ForeignKey( 
-        User, on_delete=models.CASCADE, related_name='comments') 
-    post = models.ForeignKey( 
-        Post, on_delete=models.CASCADE, related_name='comments') 
-    text = models.TextField() 
-    created = models.DateTimeField( 
-        'Дата добавления', auto_now_add=True, db_index=True) 
- 
-    class Meta: 
-        ordering = ['-created'] 
- 
- 
-class Follow(models.Model): 
-    following = models.ForeignKey( 
-        User, 
-        on_delete=models.CASCADE, 
-        related_name='following' 
-    ) 
-    user = models.ForeignKey( 
-        User, 
-        on_delete=models.CASCADE, 
-        related_name='follower' 
-    ) 
- 
+
+
+class Comment(models.Model):
+    author = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='comments'
+    )
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name='comments'
+    )
+    text = models.TextField()
+    created = models.DateTimeField(
+        'Дата добавления', auto_now_add=True, db_index=True
+    )
+
+    class Meta:
+        ordering = ['-created']
+
+
+class Follow(models.Model):
+    following = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='following'
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='follower'
+    )
+
     class Meta:
         ordering = ['following__username', 'user__username']
